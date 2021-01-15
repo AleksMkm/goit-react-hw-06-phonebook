@@ -1,8 +1,14 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { useSelector, useDispatch } from 'react-redux';
 import styles from './Filter.module.css';
+import { getFilter } from '../../redux/selectors';
+import actions from '../../redux/actions';
 
-function Filter({ value, onChange }) {
+function Filter() {
+  const filter = useSelector(getFilter);
+
+  const dispatch = useDispatch();
+
   return (
     <form className={styles.form}>
       <label>
@@ -10,17 +16,12 @@ function Filter({ value, onChange }) {
         <input
           className={styles.searchField}
           type="text"
-          value={value}
-          onChange={onChange}
+          value={filter}
+          onChange={e => dispatch(actions.changeFilter(e.target.value))}
         />
       </label>
     </form>
   );
 }
-
-Filter.propTypes = {
-  value: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired,
-};
 
 export default Filter;

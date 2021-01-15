@@ -19,11 +19,7 @@ function Contact({ id, name, phone, deleteHandler }) {
         {phone}
       </span>
 
-      <IconButton
-        onClick={deleteHandler}
-        data-id={id}
-        aria-label="delete contact"
-      >
+      <IconButton onClick={deleteHandler} aria-label="delete contact">
         <DeleteIcon />
       </IconButton>
     </li>

@@ -1,14 +1,26 @@
 import React, { useRef } from 'react';
-import PropTypes from 'prop-types';
 import { useForm } from 'react-hook-form';
+import { useSelector, useDispatch } from 'react-redux';
 import styles from './ContactForm.module.css';
+import { getContacts } from '../../redux/selectors';
+import actions from '../../redux/actions';
 
-function ContactForm({ getFormData }) {
+function ContactForm() {
   const { register, handleSubmit, errors, reset } = useForm();
   const btn = useRef();
+  const contacts = useSelector(getContacts);
+  const dispatch = useDispatch();
 
   const onSubmit = data => {
-    getFormData(data.name.trim(), data.number.trim());
+    if (
+      contacts.find(
+        contact => contact.name.toLowerCase() === data.name.toLowerCase(),
+      )
+    ) {
+      alert(`${data.name} is already in Phonebook`);
+      return;
+    }
+    dispatch(actions.addContact(data.name.trim(), data.number.trim()));
     btn.current.blur();
     reset({});
   };
@@ -68,9 +80,5 @@ function ContactForm({ getFormData }) {
     </form>
   );
 }
-
-ContactForm.propTypes = {
-  getFormData: PropTypes.func.isRequired,
-};
 
 export default ContactForm;
